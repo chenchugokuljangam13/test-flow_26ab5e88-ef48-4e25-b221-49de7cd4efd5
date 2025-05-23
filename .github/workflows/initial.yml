@@ -1,0 +1,97 @@
+# # name: CI
+# on:
+#   pull_request:
+#     types: [edited, opened, reopened, synchronize]
+# # for testing i will use this workflows on push action
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-test:
+
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+
+#       - name: Use Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: '18.x'
+      
+#       - name: Install dependencies
+#         run: npm i
+      
+#       - name: Run test cases
+#         run: npm run unit
+
+      
+name: CI
+
+on:
+  pull_request:
+    types: [edited, opened, reopened, synchronize]
+    branches: [ "main" ]
+  push:
+    branches:
+      - main 
+      - dev
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm i
+
+      
+      - name: Run test cases
+        run: npm run unit
+      - name: Check secrets
+        run: |
+          if [ -z "${{ secrets.SUPABASE_URL }}" ]; then
+            echo "SUPABASE_URL is NOT set"
+          else
+            echo "SUPABASE_URL is set"
+          fi
+      - name: Extract PR Info
+        id: pr_info
+        run: |
+          echo "COMMIT_ID=${{ github.sha }}" >> $GITHUB_ENV
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_ENV
+          fi
+      - name: Get PR info and send to Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          PR_TITLE: ${{ env.PR_TITLE }}
+          COMMIT_ID: ${{ env.COMMIT_ID }}
+          REPO_NAME: ${{  github.event.repository.name }}
+        run: |
+          echo "SUPABASE_URL is: '${SUPABASE_URL}'"
+          IFS='_' read -ra parts <<< "$REPO_NAME"
+          ID="${parts[1]}"
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            curl -X PATCH "$SUPABASE_URL/rest/v1/candidate_assessment?id=eq.${ID}" \
+              -H "apikey: $SUPABASE_KEY" \
+              -H "Authorization: Bearer $SUPABASE_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$(jq -n --arg pr_name "$PR_TITLE" --arg sha "$COMMIT_ID" '{pr_name: $pr_name, sha: $sha}')"
+          else
+            curl -X PATCH "$SUPABASE_URL/rest/v1/candidate_assessment?id=eq.${ID}" \
+              -H "apikey: $SUPABASE_KEY" \
+              -H "Authorization: Bearer $SUPABASE_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$(jq -n --arg sha "$COMMIT_ID" '{sha: $sha}')"
+          fi
