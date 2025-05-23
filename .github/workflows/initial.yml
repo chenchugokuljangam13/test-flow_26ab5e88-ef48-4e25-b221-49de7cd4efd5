@@ -1,35 +1,5 @@
-# # name: CI
-# on:
-#   pull_request:
-#     types: [edited, opened, reopened, synchronize]
-# # for testing i will use this workflows on push action
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build-and-test:
-
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 0
-
-#       - name: Use Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: '18.x'
-      
-#       - name: Install dependencies
-#         run: npm i
-      
-#       - name: Run test cases
-#         run: npm run unit
-
       
 name: CI
-
 on:
   pull_request:
     types: [edited, opened, reopened, synchronize]
