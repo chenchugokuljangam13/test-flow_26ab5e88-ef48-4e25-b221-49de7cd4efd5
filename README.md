@@ -1,4 +1,4 @@
-# Getting Started now
+# Getting Started
 - System requirements
   - Node.JS v18
 - Set environment variables: create a `.env` file in the root directory, and copy the contents from [.env.sample](.env.sample)
