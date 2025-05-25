@@ -18,7 +18,7 @@ payload=$(jq -n \
   --argjson summary "$testHistory" \
   --arg score "$testScore" \
   --arg submittedAt "$submittedAt" \
-  '{submitted_at: $submittedAt, results: { "result-score": $score, "result-summary": $summary } }')
+  '{submitted_at: $submittedAt, status: "Submitted", results: { "result-score": $score, "result-summary": $summary } }')
 
 curl -X PATCH "$SUPABASE_URL/rest/v1/candidate_assessment?id=eq.${ASSESSMENT_ID}" \
   -H "apikey: $SUPABASE_API_KEY" \
