@@ -4,6 +4,7 @@ set -e
 
 if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
   PR_TITLE=$(jq -r .pull_request.title "$GITHUB_EVENT_PATH")
+  echo "PR_TITLE=$PR_TITLE" >> "$GITHUB_ENV"
 fi
 
 SUPABASE_URL=${SUPABASE_URL}
