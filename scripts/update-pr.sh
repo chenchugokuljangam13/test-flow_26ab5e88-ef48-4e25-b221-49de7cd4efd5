@@ -4,7 +4,6 @@ set -e
 
 if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
   PR_TITLE=$(jq -r .pull_request.title "$GITHUB_EVENT_PATH")
-  echo "PR_TITLE=$PR_TITLE" >> "$GITHUB_ENV"
 fi
 
 SUPABASE_URL=${SUPABASE_URL}
@@ -13,7 +12,6 @@ PR_TITLE=${PR_TITLE}
 COMMIT_ID=${COMMIT_ID}
 REPO_NAME=$(jq -r .repository.name "$GITHUB_EVENT_PATH")
 
-echo "SUPABASE_URL is: '${SUPABASE_URL}'"
 IFS='_' read -ra parts <<< "$REPO_NAME"
 ID="${parts[1]}"
 
