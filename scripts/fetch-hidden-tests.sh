@@ -19,7 +19,7 @@ if [[ "$url" == "null" || -z "$url" ]]; then
 fi
 
 if curl -s -f -o tests/test-case-private.test.js "$url" > /dev/null 2>&1; then
-  echo "Hidden test case saved to tests/test-case-private.test.js"
+  echo "Hidden test case are saved"
 else
   echo "Failed to download hidden test case."
   exit 1
