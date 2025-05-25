@@ -4,8 +4,6 @@ set -e
 IFS='_' read -ra parts <<< "$REPO_NAME"
 export ASSESSMENT_ID="${parts[1]}"
 
-echo "Extracting test history from results.json..."
-
 testHistory=$(jq '[.testResults[].assertionResults[] | {testName: .title, testStatus: .status}]' results.json)
 numPassed=$(jq '.numPassedTests' results.json)
 numTotal=$(jq '.numTotalTests' results.json)
