@@ -12,7 +12,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
   const { data, error } = await supabase
     .from('assessments')           
     .select('*')                
-    .eq('name', 'flowName');
+    .eq('name', flowName);
   if (error) {
     console.error('Supabase error:', error);
     process.exit(1);
