@@ -1,6 +1,4 @@
 #!/bin/bash
-
-
 IFS='_' read -ra parts <<< "$REPO_NAME"
 export FLOW_NAME="${parts[0]}"
 node <<'EOF'
