@@ -9,6 +9,7 @@ numPassed=$(jq '.numPassedTests' results.json)
 numTotal=$(jq '.numTotalTests' results.json)
 testScore="${numPassed}/${numTotal}"
 submittedAt=$(date +"%Y-%m-%dT%H:%M:%S%:z")
+
 payload=$(jq -n \
   --argjson summary "$testHistory" \
   --arg score "$testScore" \
