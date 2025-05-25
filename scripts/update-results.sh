@@ -16,7 +16,7 @@ payload=$(jq -n \
   --arg submittedAt "$submittedAt" \
   '{submitted_at: $submittedAt, status: "Submitted", results: { "result-score": $score, "result-summary": $summary } }')
 
-curl -s -o /dev/null -w "%{http_code}" -X PATCH "$SUPABASE_URL/rest/v1/candidate_assessment?id=eq.${ASSESSMENT_ID}" \
+curl -s -o /dev/null -w "%{http_code}" -X PATCH "$SUPABASE_URL/rest/v1/candidate_assessment?id=eq.${ASSESSMENT_ID}&submitted_at=is.null&results=is.null" \
   -H "apikey: $SUPABASE_API_KEY" \
   -H "Authorization: Bearer $SUPABASE_API_KEY" \
   -H "Content-Type: application/json" \
