@@ -1,5 +1,4 @@
 name: CI
-
 on:
   pull_request:
     types: [edited, opened, reopened, synchronize]
@@ -23,6 +22,7 @@ jobs:
       - name: Install dependencies
         run: npm i
 
+
       - name: Make script executable
         run: chmod +x scripts/update-pr.sh
 
@@ -34,4 +34,6 @@ jobs:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_EVENT_PATH: ${{ github.event_path }}
         run: ./scripts/update-pr.sh
-      
+        
+      - name: run unit test case
+        run: npm run unit
