@@ -1,11 +1,11 @@
 name: CI
 on:
-  pull_request:
-    types: [edited, opened, reopened, synchronize]
-    branches: [ "main" ]
+  # pull_request:
+  #   types: [edited, opened, reopened, synchronize]
+  #   branches: [ "main" ]
   push:
     branches:
-      - main 
+      - dev 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -23,17 +23,17 @@ jobs:
         run: npm i
 
 
-      - name: Make script executable
-        run: chmod +x scripts/update-pr.sh
+      # - name: Make script executable
+      #   run: chmod +x scripts/update-pr.sh
 
-      - name: Run update-pr script
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
-          GITHUB_EVENT_PATH: ${{ github.event_path }}
-        run: ./scripts/update-pr.sh
+      # - name: Run update-pr script
+      #   env:
+      #     SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      #     SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      #     GITHUB_SHA: ${{ github.sha }}
+      #     GITHUB_EVENT_NAME: ${{ github.event_name }}
+      #     GITHUB_EVENT_PATH: ${{ github.event_path }}
+      #   run: ./scripts/update-pr.sh
         
       - name: run unit test case
         run: npm run unit

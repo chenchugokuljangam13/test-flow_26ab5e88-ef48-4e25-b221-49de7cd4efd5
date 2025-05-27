@@ -8,7 +8,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Configure Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Merge dev branch into main
+        run: |
+          git fetch origin dev
+          git merge origin/dev --no-ff -m "Merge dev into main from workflow"
+          
+      - name: Push updated main branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin main
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
