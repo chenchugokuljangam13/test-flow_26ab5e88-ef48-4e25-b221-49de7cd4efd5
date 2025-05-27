@@ -8,25 +8,25 @@ const { User } = require('../db/models');
  */
 router.post('/register', async (req, res, next) => {
   try {
-    const { username, password } = req.body;
+    // const { username, password } = req.body;
 
-    if (!username || !password) {
-      return res.status(400).json({ error: 'username and password required' });
-    }
+    // if (!username || !password) {
+    //   return res.status(400).json({ error: 'username and password required' });
+    // }
 
-    if (password.length < 6) {
-      return res
-        .status(400)
-        .json({ error: 'Password must be at least 6 characters' });
-    }
+    // if (password.length < 6) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: 'Password must be at least 6 characters' });
+    // }
 
-    const user = await User.create(req.body);
+    // const user = await User.create(req.body);
 
-    const token = jwt.sign(
-      { id: user.dataValues.id },
-      process.env.SESSION_SECRET,
-      { expiresIn: 86400 }
-    );
+    // const token = jwt.sign(
+    //   { id: user.dataValues.id },
+    //   process.env.SESSION_SECRET,
+    //   { expiresIn: 86400 }
+    // );
     res.json({
       ...user.dataValues,
       token,
